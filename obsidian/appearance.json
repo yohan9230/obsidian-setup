@@ -5,7 +5,6 @@
   "interfaceFontFamily": "Noto Sans KR,Consolas",
   "baseFontSizeAction": true,
   "enabledCssSnippets": [
-    "file-explorer-tweaks",
     "content-width",
     "toc-style",
     "no-task-strikethrough",
