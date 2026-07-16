@@ -1,0 +1,41 @@
+{
+  "groups": [
+    {
+      "name": "List Type",
+      "listItems": [
+        {
+          "text": "- [ ]"
+        },
+        {
+          "text": ""
+        }
+      ]
+    },
+    {
+      "name": "Task",
+      "listItems": [
+        {
+          "text": "- [ ]"
+        },
+        {
+          "text": "- [ ]"
+        },
+        {
+          "text": "- [x]"
+        },
+        {
+          "text": "- [-]"
+        },
+        {
+          "text": "- [/]"
+        },
+        {
+          "text": "- [>]"
+        },
+        {
+          "text": "- [<]"
+        }
+      ]
+    }
+  ]
+}

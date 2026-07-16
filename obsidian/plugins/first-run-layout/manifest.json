@@ -1,0 +1,9 @@
+{
+  "id": "first-run-layout",
+  "name": "First Run Layout",
+  "version": "1.0.0",
+  "minAppVersion": "1.7.7",
+  "description": "보관함을 처음 열어 화면이 비어 있으면 왼쪽에 목록.md, 오른쪽에 첫 문서를 열고 그 오른쪽 창을 Target Pane으로 지정한다.",
+  "author": "yohan",
+  "isDesktopOnly": false
+}

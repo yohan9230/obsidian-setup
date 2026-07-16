@@ -1,0 +1,10 @@
+{
+	"id": "in-progress-checkbox",
+	"name": "In Progress Checkbox",
+	"version": "1.0.0",
+	"minAppVersion": "1.0.0",
+	"description": "Shift+Click to set checkbox to in-progress [/] state. Simple click cycles between states.",
+	"author": "Jyuukun",
+	"authorUrl": "https://github.com/Jyuukun",
+	"isDesktopOnly": false
+}

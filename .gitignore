@@ -1,0 +1,22 @@
+# 볼트마다 달라야 하는 파일 — 여기 올라오면 안 된다.
+#
+# 나중에 마스터 볼트를 obsidian/ 에 통째로 다시 복사하더라도
+# 아래 파일들이 실수로 커밋되지 않도록 막는 안전장치.
+
+# 최근 연 파일·창 배치. 실제로 작업한 문서 제목이 그대로 들어있어
+# 공개 저장소에 올라가면 안 된다. (제외 이유 중 유일하게 '보안'인 항목)
+obsidian/workspace.json
+obsidian/workspace-mobile.json
+
+# 볼트 표시명 — 볼트마다 달라야 한다. 덮으면 볼트 스위처가 무력화된다.
+obsidian/plugins/vault-nickname/data-shared.json
+
+# 창 ID — 볼트마다 다르고 first-run-layout 이 어차피 재생성한다.
+obsidian/plugins/target-pane/data.json
+
+# 그래프 뷰 확대·위치. 만질 때마다 바뀌어 잡음이 된다.
+obsidian/graph.json
+
+# ===== 일반 =====
+.DS_Store
+Thumbs.db

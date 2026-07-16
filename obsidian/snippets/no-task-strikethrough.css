@@ -1,0 +1,7 @@
+/* 완료된 체크박스 항목에 자동으로 그어지는 취소선 제거 */
+body {
+  --checklist-done-decoration: none;
+}
+
+/* (선택) 완료 항목 글자색이 흐려지는 것도 싫으면 아래 줄의 주석을 풀기 */
+/* body { --checklist-done-color: inherit; } */

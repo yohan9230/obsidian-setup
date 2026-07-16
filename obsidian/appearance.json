@@ -1,0 +1,19 @@
+{
+  "accentColor": "#ffd500",
+  "cssTheme": "Obsidianotion",
+  "theme": "obsidian",
+  "interfaceFontFamily": "Noto Sans KR,Consolas",
+  "baseFontSizeAction": true,
+  "enabledCssSnippets": [
+    "file-explorer-tweaks",
+    "content-width",
+    "toc-style",
+    "no-task-strikethrough",
+    "hide-view-header",
+    "hide-status-bar",
+    "callout-info-readable"
+  ],
+  "baseFontSize": 19,
+  "showViewHeader": true,
+  "showRibbon": true
+}

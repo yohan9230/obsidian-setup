@@ -1,0 +1,83 @@
+{
+  "version": 2,
+  "confirmDeletion": false,
+  "showDescriptions": true,
+  "showSourcesForDuplicates": true,
+  "debug": false,
+  "mainTrigger": "/",
+  "extraTriggers": [],
+  "useExtraTriggers": false,
+  "triggerOnlyOnNewLine": false,
+  "queryPattern": {},
+  "bindings": [
+    {
+      "name": "표/Table",
+      "id": "editor:insert-table",
+      "action": "editor:insert-table",
+      "icon": "table-2",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "children": []
+    },
+    {
+      "id": "e2bddb43-249a-4c14-bd5e-a888ce3ceb13",
+      "icon": "database",
+      "name": "베이스/데이터베이스/Base/DataBase",
+      "action": "insert-template",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "isGroup": false,
+      "children": []
+    },
+    {
+      "id": "96f1be83-5e0f-41e9-a8ed-438ccde01ba4",
+      "icon": "lucide-code",
+      "name": "코드/Code",
+      "action": "editor:insert-codeblock",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "isGroup": false,
+      "children": []
+    },
+    {
+      "id": "e6d19339-48af-4bc2-9702-4ebc87b72f97",
+      "icon": "lucide-sigma-square",
+      "name": "수학/수식/Math",
+      "action": "editor:insert-mathblock",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "isGroup": false,
+      "children": []
+    },
+    {
+      "id": "73275229-1b24-4fac-9640-3cd3bf2d8cfa",
+      "icon": "bracket-glyph",
+      "name": "링크/페이지/Link/Page",
+      "action": "editor:insert-wikilink",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "isGroup": false,
+      "children": []
+    },
+    {
+      "id": "9be85d2e-71dd-4b74-9eee-103d9f093623",
+      "icon": "lucide-copy",
+      "name": "템플릿/Template",
+      "action": "insert-template",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "isGroup": false,
+      "children": []
+    },
+    {
+      "id": "04e98ab6-e632-41dd-a918-15419e059b58",
+      "icon": "lucide-check-square",
+      "name": "체크박스/할 일 목록/Task",
+      "action": "editor:toggle-checklist-status",
+      "mode": "any",
+      "triggerMode": "anywhere",
+      "isGroup": false,
+      "children": []
+    }
+  ]
+}

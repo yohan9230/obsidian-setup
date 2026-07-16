@@ -1,0 +1,12 @@
+/* Obsidianotion 테마가 [!info] 콜아웃 배경만 새빨강으로 칠한다(theme.css의 [data-callout="info"]).
+   글자는 기본값인 파랑이라 빨강 위에서 읽기 힘들다. 배경을 어두운 빨강으로 낮추고 글자·아이콘을 흰색으로 올린다. */
+
+[data-callout="info"] {
+	--callout-color: 255, 255, 255;
+	background: #7f1d1d; /* 더 어둡게: #5c1414 / 더 밝게: #a83232 */
+}
+
+[data-callout="info"] .callout-title,
+[data-callout="info"] .callout-content {
+	color: #fff;
+}

@@ -1,0 +1,9 @@
+{
+  "id": "vault-switcher-nicknames",
+  "name": "Vault Switcher Nicknames",
+  "version": "1.0.0",
+  "minAppVersion": "1.7.7",
+  "description": "\"보관함 열기...\" 명령의 보관함 목록에 폴더명 대신 Vault Nickname 닉네임을 표시한다.",
+  "author": "yohan",
+  "isDesktopOnly": true
+}
