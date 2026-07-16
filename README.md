@@ -81,7 +81,10 @@
 .\vault.ps1 check     # 뭐가 다른지만 본다. 아무것도 안 바꾼다
 .\vault.ps1 sync      # 이 저장소 -> 볼트들
 .\vault.ps1 capture -Vault "<볼트경로>"   # 볼트에서 바꾼 걸 이 저장소로
+.\vault.ps1 init -Path "<폴더>"           # 그 폴더를 이 설정으로 새 볼트로 만든다
 ```
+
+`init` 은 위 "설치"를 자동으로 해준다 — 폴더에 `.obsidian` 을 깔고, 표시명을 폴더 이름으로 잡고, 앞으로 `sync` 대상에 등록한다. 이미 `.obsidian` 이 있으면 덮어쓰지 않는다.
 
 `C:\dev\<폴더>\docs\.obsidian` 는 자동으로 찾는다. 그 밖의 볼트는 `vault.local.json` 에 적는다.
 

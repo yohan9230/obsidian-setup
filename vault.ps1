@@ -17,14 +17,17 @@
     .\vault.ps1 check
     .\vault.ps1 sync
     .\vault.ps1 capture -Vault "C:\어디\docs\.obsidian"
+    .\vault.ps1 init -Path "C:\어디\새볼트"      (그 폴더를 새 볼트로 만든다)
 #>
 [CmdletBinding()]
 param(
     [Parameter(Position = 0)]
-    [ValidateSet('check', 'sync', 'capture')]
+    [ValidateSet('check', 'sync', 'capture', 'init')]
     [string]$Command = 'check',
 
     [string]$Vault,
+
+    [string]$Path,
 
     [switch]$Force
 )
@@ -203,6 +206,77 @@ if (-not (Test-Path $Source)) {
 Write-Host ""
 Write-Host "원본: $Source" -ForegroundColor White
 Test-GitignoreSync
+
+if ($Command -eq 'init') {
+    if (-not $Path) {
+        Write-Host ""
+        Write-Host "init 은 -Path 로 새 볼트를 만들 폴더를 지정해야 합니다." -ForegroundColor Red
+        Write-Host '예: .\vault.ps1 init -Path "C:\어디\새볼트"' -ForegroundColor DarkGray
+        exit 1
+    }
+    $dotObs = Join-Path $Path '.obsidian'
+    if ((Test-Path $dotObs) -and -not $Force) {
+        Write-Host ""
+        Write-Host "이미 볼트가 있습니다: $dotObs" -ForegroundColor Red
+        Write-Host "덮어쓰려면 -Force (기존 설정이 사라집니다). 이미 있는 볼트를 맞추려면 sync 를 쓰세요." -ForegroundColor DarkGray
+        exit 1
+    }
+    # 새 볼트는 옵시디언이 아직 모르는 폴더라, 다른 볼트가 열려 있어도 상관없다.
+    # (sync 와 달리 옵시디언 실행 여부를 따지지 않는다.)
+
+    Write-Host ""
+    Write-Host "새 볼트: $Path" -ForegroundColor White
+    Write-Host ""
+
+    if (-not (Test-Path $Path)) { New-Item -ItemType Directory -Path $Path -Force | Out-Null }
+
+    # .obsidian 생성 — 제외 목록은 빼고 복사한다.
+    # workspace/graph/target-pane 은 새 볼트가 스스로 새로 만든다.
+    $src = Get-RelPaths $Source
+    $nCopied = 0
+    foreach ($rel in $src.Keys) {
+        if (Test-Excluded $rel) { continue }
+        $dst = Join-Path $dotObs ($rel -replace '/', '\')
+        $dir = Split-Path $dst -Parent
+        if (-not (Test-Path $dir)) { New-Item -ItemType Directory -Path $dir -Force | Out-Null }
+        Copy-Item $src[$rel] $dst -Force
+        $nCopied++
+    }
+
+    # 표시명 = 이 폴더 이름. 볼트마다 달라야 하므로 여기서 새로 만든다.
+    # 옵시디언 스타일에 맞춰 BOM 없이, 끝에 개행 없이 쓴다.
+    $nick = Split-Path $Path -Leaf
+    $nickDir = Join-Path $dotObs 'plugins\vault-nickname'
+    if (-not (Test-Path $nickDir)) { New-Item -ItemType Directory -Path $nickDir -Force | Out-Null }
+    $nickJson = "{`n  `"nickname`": `"$nick`"`n}"
+    [System.IO.File]::WriteAllText((Join-Path $nickDir 'data-shared.json'), $nickJson, (New-Object System.Text.UTF8Encoding($false)))
+
+    Write-Host "  .obsidian 생성 ($nCopied 개 파일, 표시명: $nick)" -ForegroundColor Green
+
+    # 환경 문서 — 이미 있으면 안 건드린다.
+    foreach ($doc in @('Obsidian-단축키.md', '문서-링크-규칙.md')) {
+        $s = Join-Path $Root $doc
+        $d = Join-Path $Path $doc
+        if ((Test-Path $s) -and -not (Test-Path $d)) { Copy-Item $s $d; Write-Host "  문서 추가: $doc" -ForegroundColor Green }
+    }
+
+    # 앞으로 sync/check 대상에 포함되도록 등록.
+    # C:\dev\<레포>\docs\.obsidian 는 자동 탐색되지만, 그 밖이면 등록해야 안 뒤처진다.
+    $resolved = (Resolve-Path $dotObs).Path
+    if ((Get-TargetVaults) -notcontains $resolved) {
+        $localCfg = Join-Path $Root 'vault.local.json'
+        if (Test-Path $localCfg) { $cfg = Get-Content $localCfg -Raw -Encoding UTF8 | ConvertFrom-Json }
+        else { $cfg = [pscustomobject]@{ extraVaults = @() } }
+        $cfg.extraVaults = @(@($cfg.extraVaults) + $resolved | Where-Object { $_ } | Select-Object -Unique)
+        $cfg | ConvertTo-Json | Set-Content $localCfg -Encoding UTF8
+        Write-Host "  vault.local.json 에 등록 — 앞으로 sync 대상에 포함됩니다." -ForegroundColor Green
+    }
+
+    Write-Host ""
+    Write-Host "  완료. Obsidian 에서 '$Path' 를 보관함으로 열면 됩니다." -ForegroundColor Green
+    Write-Host ""
+    exit 0
+}
 
 if ($Command -eq 'capture') {
     if (-not $Vault) {
