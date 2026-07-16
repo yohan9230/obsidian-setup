@@ -1,6 +1,4 @@
 {
-  "terminal:find-in-terminal": [],
-  "terminal:close-terminal": [],
   "file-explorer:new-file": [
     {
       "modifiers": [
@@ -29,14 +27,6 @@
       "key": "B"
     }
   ],
-  "realclaudian:new-tab": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "N"
-    }
-  ],
   "markdown:toggle-preview": [
     {
       "modifiers": [
@@ -52,22 +42,6 @@
         "Shift"
       ],
       "key": "C"
-    }
-  ],
-  "termy:open-terminal": [
-    {
-      "modifiers": [
-        "Mod"
-      ],
-      "key": "`"
-    }
-  ],
-  "realclaudian:close-current-tab": [
-    {
-      "modifiers": [
-        "Alt"
-      ],
-      "key": "W"
     }
   ],
   "list-cycler:cycle-list-type-forward": [
