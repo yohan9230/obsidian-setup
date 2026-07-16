@@ -253,8 +253,9 @@ if ($Command -eq 'init') {
 
     Write-Host "  .obsidian 생성 ($nCopied 개 파일, 표시명: $nick)" -ForegroundColor Green
 
-    # 환경 문서 — 이미 있으면 안 건드린다.
-    foreach ($doc in @('Obsidian-단축키.md', '문서-링크-규칙.md')) {
+    # 환경 문서 — 이미 있으면 안 건드린다(같은 이름이면 요한 것을 지키고 생략).
+    # 목록.md 는 왼쪽 탭, Obsidian-단축키.md 는 오른쪽 탭으로 열린다(first-run-layout).
+    foreach ($doc in @('목록.md', 'Obsidian-단축키.md', '문서-링크-규칙.md')) {
         $s = Join-Path $Root $doc
         $d = Join-Path $Path $doc
         if ((Test-Path $s) -and -not (Test-Path $d)) { Copy-Item $s $d; Write-Host "  문서 추가: $doc" -ForegroundColor Green }

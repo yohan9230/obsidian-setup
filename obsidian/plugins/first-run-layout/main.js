@@ -3,7 +3,9 @@
 const { Notice, Plugin } = require('obsidian');
 
 const TOC_FILE = '목록.md';
-const PREFERRED_FIRST_FILE = 'README.md';
+// 오른쪽 탭에 열 문서. 단축키 문서는 이 설정을 받은 모든 볼트에 항상 따라오므로
+// 어디서든 확실히 열린다. (README 는 새 볼트에 없어서 폴백으로 빠지곤 했다.)
+const PREFERRED_FIRST_FILE = 'Obsidian-단축키.md';
 const TARGET_PANE_SET_COMMAND = 'target-pane:set';
 
 module.exports = class FirstRunLayoutPlugin extends Plugin {
