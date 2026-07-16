@@ -52,6 +52,14 @@ $PerVaultFiles = @(
     'plugins/target-pane/data.json'               # 창 ID. first-run-layout 이 어차피 재생성한다
 )
 
+# ============================================================================
+#  모든 볼트가 공유하는 문서. sync 때 각 볼트에 배포한다(없거나 달라도 맞춘다).
+#  first-run-layout 이 오른쪽 탭에 Obsidian-단축키.md 를 여는데, 이게 없으면
+#  엉뚱한 문서가 열린다. 그래서 배포 대상이다.
+#  목록.md 는 볼트마다 자기 것이라 여기 넣지 않는다(건드리지 않는다).
+# ============================================================================
+$SharedDocs = @('Obsidian-단축키.md', '문서-링크-규칙.md')
+
 # ---------------------------------------------------------------------------
 
 function Get-RelPaths {
@@ -173,6 +181,31 @@ function Copy-Tree {
     # 빈 폴더 정리
     Get-ChildItem $To -Recurse -Directory | Sort-Object { $_.FullName.Length } -Descending | ForEach-Object {
         if (-not (Get-ChildItem $_.FullName -Force)) { Remove-Item $_.FullName -Force }
+    }
+}
+
+function Sync-VaultExtras {
+    # sync 때 볼트마다: ① 공유 문서 배포 ② 화면 배치 초기화
+    param([string]$DotObsidian)
+    $docroot = Split-Path $DotObsidian -Parent
+
+    # ① 공유 문서(단축키·링크규칙)를 볼트 문서 폴더에 배포. 원본 자기 자신은 건너뛴다.
+    foreach ($doc in $SharedDocs) {
+        $s = Join-Path $Root $doc
+        $d = Join-Path $docroot $doc
+        if ((Test-Path $s) -and ((Resolve-Path $s).Path -ne (Join-Path (Resolve-Path $docroot).Path $doc))) {
+            Copy-Item $s $d -Force
+        }
+    }
+
+    # ② 화면 배치 초기화 — C:\dev 볼트만. 개인 원드라이브 볼트는 작업 중이라 안 건드린다.
+    # workspace/target-pane 을 지우면 다음에 열 때 비어 있어서 first-run-layout 이
+    # 목록(왼쪽)|단축키(오른쪽)로 새로 짜고, 고정 탭·엉뚱한 대상 창 문제가 사라진다.
+    if ($DotObsidian -like 'C:\dev\*') {
+        foreach ($f in @('workspace.json', 'workspace-mobile.json', 'plugins\target-pane\data.json')) {
+            $fp = Join-Path $DotObsidian $f
+            if (Test-Path $fp) { Remove-Item $fp -Force }
+        }
     }
 }
 
@@ -321,11 +354,10 @@ Write-Host "대상 볼트 $($targets.Count) 곳:" -ForegroundColor White
 Write-Host ""
 
 $plans = @()
-$any = $false
 foreach ($v in $targets) {
     $diff = Compare-Tree -From $Source -To $v
     $name = Split-Path (Split-Path $v -Parent) -Parent | Split-Path -Leaf
-    if (Show-Plan -Name $name -Diff $diff) { $any = $true }
+    Show-Plan -Name $name -Diff $diff | Out-Null
     $plans += [pscustomobject]@{ Vault = $v; Diff = $diff }
 }
 
@@ -341,12 +373,12 @@ if ($Command -eq 'check') {
     exit 0
 }
 
-if (-not $any) {
-    Write-Host ""
-    Write-Host "  전부 이미 같습니다. 할 일이 없습니다." -ForegroundColor Green
-    Write-Host ""
-    exit 0
-}
+# .obsidian 변경이 없어도 sync 는 공유 문서 배포 + 화면 배치 초기화를 하므로 그냥 진행한다.
+Write-Host ""
+Write-Host "  sync 는 이것도 함께 한다:" -ForegroundColor DarkGray
+Write-Host "    - 공유 문서 배포: $($SharedDocs -join ', ')" -ForegroundColor DarkGray
+Write-Host "    - C:\dev 볼트의 화면 배치 초기화 → 다음에 열면 목록|단축키로 뜸(고정·열린 탭 리셋)" -ForegroundColor DarkGray
+Write-Host "      (개인 원드라이브 볼트는 작업 중이라 배치를 건드리지 않음)" -ForegroundColor DarkGray
 
 if (Test-ObsidianRunning) { exit 1 }
 
@@ -359,6 +391,7 @@ if (-not $Force) {
 Write-Host ""
 foreach ($p in $plans) {
     Copy-Tree -From $Source -To $p.Vault -Diff $p.Diff
+    Sync-VaultExtras -DotObsidian $p.Vault
     Write-Host "  완료: $($p.Vault)" -ForegroundColor Green
 }
 
