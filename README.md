@@ -61,20 +61,35 @@
 
 ## 안 들어있는 것
 
-볼트마다 **달라야 하는** 파일들이라 일부러 뺐다. 없어도 Obsidian 이 알아서 새로 만든다.
+볼트마다 **달라야 하는** 파일 몇 개는 일부러 뺐다. 열린 탭 배치, 볼트 별명, 창 ID 같은 것들이다. 없어도 Obsidian 이 알아서 새로 만든다.
 
-| 파일 | 왜 뺐나 |
-|---|---|
-| `workspace.json` | 최근 연 파일·창 배치. **실제 작업한 문서 제목이 들어있어 공개할 수 없다** |
-| `plugins/vault-nickname/data-shared.json` | 볼트 별명. 넣으면 모든 볼트가 같은 이름이 되어 볼트 스위처가 무의미해진다 |
-| `plugins/target-pane/data.json` | 창 ID. 볼트마다 다르고 First Run Layout 이 재생성한다 |
-| `graph.json` | 그래프 뷰 확대·위치 |
+**정확한 목록은 [`vault.ps1`](vault.ps1) 의 `$PerVaultFiles` 에 있다.** 여기 옮겨 적지 않는 이유는 두 곳에 두면 언젠가 어긋나기 때문이다. 그 파일이 정본이다.
+
+그중 `workspace.json` 만은 성격이 다르다. 최근 연 파일 목록이라 **실제 작업한 문서 제목이 들어있어서**, 볼트별로 달라야 해서가 아니라 **공개하면 안 되기 때문에** 뺐다.
 
 설치 후 볼트 별명을 쓰려면 `plugins/vault-nickname/data-shared.json` 을 만들고 이렇게 적으면 된다.
 
 ```json
 { "nickname": "내 볼트 이름" }
 ```
+
+## 볼트를 여러 개 쓴다면
+
+`vault.ps1` 로 여러 볼트를 이 저장소와 맞출 수 있다.
+
+```powershell
+.\vault.ps1 check     # 뭐가 다른지만 본다. 아무것도 안 바꾼다
+.\vault.ps1 sync      # 이 저장소 -> 볼트들
+.\vault.ps1 capture -Vault "<볼트경로>"   # 볼트에서 바꾼 걸 이 저장소로
+```
+
+`C:\dev\<폴더>\docs\.obsidian` 는 자동으로 찾는다. 그 밖의 볼트는 `vault.local.json` 에 적는다.
+
+```json
+{ "extraVaults": ["D:\\어디\\내볼트\\.obsidian"] }
+```
+
+> ⚠️ `sync` 전에 Obsidian 을 닫아라. 켜져 있으면 Obsidian 이 도로 덮어쓴다. (스크립트가 막아준다.)
 
 ## 라이선스
 
