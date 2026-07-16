@@ -7,7 +7,14 @@
       "key": "T"
     }
   ],
-  "workspace:new-tab": [],
+  "workspace:new-tab": [
+    {
+      "modifiers": [
+        "Mod"
+      ],
+      "key": "N"
+    }
+  ],
   "file-explorer:new-file-in-new-pane": [],
   "app:toggle-right-sidebar": [
     {
