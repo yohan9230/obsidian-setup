@@ -356,7 +356,10 @@ Write-Host ""
 $plans = @()
 foreach ($v in $targets) {
     $diff = Compare-Tree -From $Source -To $v
-    $name = Split-Path (Split-Path $v -Parent) -Parent | Split-Path -Leaf
+    # 볼트 이름: 레포\docs\.obsidian 면 레포명, 레포\.obsidian(루트 볼트) 면 그 폴더명.
+    $vaultRoot = Split-Path $v -Parent
+    if ((Split-Path $vaultRoot -Leaf) -eq 'docs') { $name = Split-Path (Split-Path $vaultRoot -Parent) -Leaf }
+    else { $name = Split-Path $vaultRoot -Leaf }
     Show-Plan -Name $name -Diff $diff | Out-Null
     $plans += [pscustomobject]@{ Vault = $v; Diff = $diff }
 }
