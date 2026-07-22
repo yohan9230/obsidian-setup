@@ -1,0 +1,9 @@
+/* Tasks 모아보기: 그룹 제목(주제)을 본문 헤더와 구분되게 작고 옅게 */
+.tasks-group-heading {
+  font-size: 0.85em;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin: 0.7em 0 0.15em;
+  padding: 0;
+  border-bottom: none;
+}

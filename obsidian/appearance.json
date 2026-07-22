@@ -10,7 +10,8 @@
     "no-task-strikethrough",
     "hide-view-header",
     "hide-status-bar",
-    "callout-info-readable"
+    "callout-info-readable",
+    "tasks-compact"
   ],
   "baseFontSize": 17,
   "showViewHeader": true,
