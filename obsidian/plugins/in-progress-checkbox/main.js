@@ -39,6 +39,7 @@ var InProgressCheckboxPlugin = class extends import_obsidian.Plugin {
     const target = evt.target;
     const isCheckbox = target.classList.contains("task-list-item-checkbox") || target instanceof HTMLInputElement && target.type === "checkbox";
     if (!isCheckbox) return;
+    if (target.closest(".block-language-tasks, .plugin-tasks-query-result")) return;
     const isInMarkdownView = target.closest(
       ".markdown-preview-view, .markdown-reading-view, .cm-content"
     );
