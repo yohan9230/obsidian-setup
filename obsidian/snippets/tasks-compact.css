@@ -7,3 +7,10 @@
   padding: 0;
   border-bottom: none;
 }
+
+/* 항목 뒤 위치 링크(어느 주제 것인지)를 작고 옅게 */
+.tasks-backlink,
+.tasks-backlink a.internal-link {
+  font-size: 0.85em;
+  color: var(--text-muted);
+}
