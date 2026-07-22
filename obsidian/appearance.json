@@ -12,7 +12,7 @@
     "hide-status-bar",
     "callout-info-readable"
   ],
-  "baseFontSize": 19,
+  "baseFontSize": 17,
   "showViewHeader": true,
   "showRibbon": true
 }
