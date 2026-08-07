@@ -279,8 +279,14 @@ if ($Command -eq 'init') {
     }
 
     # 표시명 = 이 폴더 이름. 볼트마다 달라야 하므로 여기서 새로 만든다.
+    # 단 표준 배치(<레포>\docs)에서는 폴더 이름이 죄다 'docs' 라 표시명이 겹친다.
+    # 그때는 한 칸 위(레포 이름)를 쓴다 — 기존 볼트들이 다 그렇게 불리고 있다.
     # 옵시디언 스타일에 맞춰 BOM 없이, 끝에 개행 없이 쓴다.
     $nick = Split-Path $Path -Leaf
+    if ($nick -eq 'docs') {
+        $parent = Split-Path $Path -Parent
+        if ($parent) { $nick = Split-Path $parent -Leaf }
+    }
     $nickDir = Join-Path $dotObs 'plugins\vault-nickname'
     if (-not (Test-Path $nickDir)) { New-Item -ItemType Directory -Path $nickDir -Force | Out-Null }
     $nickJson = "{`n  `"nickname`": `"$nick`"`n}"
