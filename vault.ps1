@@ -88,7 +88,9 @@ function Get-TargetVaults {
     $vaults = @()
 
     # C:\dev 아래 자동 탐색. 레포 이름을 코드에 박지 않는다(이 저장소는 공개다).
-    Get-ChildItem 'C:\dev' -Directory -ErrorAction SilentlyContinue | ForEach-Object {
+    # 2026-08-07 부터 dev 아래가 company/personal/tools 로 한 겹 깊어져 두 겹을 훑는다.
+    # ⚠️ 한 겹만 훑던 때는 볼트를 하나도 못 찾고 에러 없이 「맞출 볼트가 없습니다」로 끝났다.
+    Get-ChildItem 'C:\dev' -Directory -Recurse -Depth 1 -ErrorAction SilentlyContinue | ForEach-Object {
         $p = Join-Path $_.FullName 'docs\.obsidian'
         if ((Test-Path $p) -and ($_.FullName -ne $Root)) { $vaults += $p }
     }
