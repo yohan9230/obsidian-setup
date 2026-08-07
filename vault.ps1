@@ -297,7 +297,7 @@ if ($Command -eq 'init') {
     }
 
     # 앞으로 sync/check 대상에 포함되도록 등록.
-    # C:\dev\<레포>\docs\.obsidian 는 자동 탐색되지만, 그 밖이면 등록해야 안 뒤처진다.
+    # C:\dev\<갈래>\<레포>\docs\.obsidian 는 자동 탐색되지만, 그 밖이면 등록해야 안 뒤처진다.
     $resolved = (Resolve-Path $dotObs).Path
     if ((Get-TargetVaults) -notcontains $resolved) {
         $localCfg = Join-Path $Root 'vault.local.json'
@@ -347,7 +347,7 @@ $targets = Get-TargetVaults
 if ($targets.Count -eq 0) {
     Write-Host ""
     Write-Host "맞출 볼트를 못 찾았습니다." -ForegroundColor Yellow
-    Write-Host "C:\dev\<레포>\docs\.obsidian 가 없고, vault.local.json 도 비어 있습니다." -ForegroundColor DarkGray
+    Write-Host "C:\dev\<갈래>\<레포>\docs\.obsidian 가 없고, vault.local.json 도 비어 있습니다." -ForegroundColor DarkGray
     exit 0
 }
 

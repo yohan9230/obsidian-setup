@@ -87,7 +87,7 @@
 
 `init` 은 위 "설치"를 자동으로 해준다 — 폴더에 `.obsidian` 을 깔고, 표시명을 폴더 이름으로 잡고, 앞으로 `sync` 대상에 등록한다. 이미 `.obsidian` 이 있으면 덮어쓰지 않는다.
 
-`C:\dev\<폴더>\docs\.obsidian` 는 자동으로 찾는다. 그 밖의 볼트는 `vault.local.json` 에 적는다.
+`C:\dev\<갈래>\<폴더>\docs\.obsidian` 는 자동으로 찾는다(`dev` 아래 두 겹까지 훑는다). 그 밖의 볼트는 `vault.local.json` 에 적는다.
 
 ```json
 { "extraVaults": ["D:\\어디\\내볼트\\.obsidian"] }
