@@ -169,6 +169,32 @@ function Show-Plan {
     return $true
 }
 
+function Show-SharedDocs {
+    # 공유 문서(단축키·링크규칙)가 볼트에서 낡았는지 본다.
+    # ⚠️ Compare-Tree 는 .obsidian 만 본다 — 그래서 2026-08-18 에 사본 6곳이 나흘간
+    #    낡아 있는데도 check 가 "이미 같음"이라고 보고했다. 그 구멍을 여기서 막는다.
+    param($Vaults)
+    $stale = @()
+    foreach ($v in $Vaults) {
+        $docroot = Split-Path $v -Parent
+        foreach ($doc in $SharedDocs) {
+            $s = Join-Path $Root $doc
+            $d = Join-Path $docroot $doc
+            if (-not (Test-Path $s)) { continue }
+            if ((Resolve-Path $s).Path -eq (Join-Path (Resolve-Path $docroot).Path $doc)) { continue }
+            if (-not (Test-Path $d)) { $stale += "$docroot  없음: $doc"; continue }
+            if ((Get-Hash $s) -ne (Get-Hash $d)) { $stale += "$docroot  낡음: $doc" }
+        }
+    }
+    Write-Host ""
+    if ($stale.Count -eq 0) {
+        Write-Host "  공유 문서($($SharedDocs -join ', ')): 전부 최신" -ForegroundColor DarkGray
+    } else {
+        Write-Host "  공유 문서가 낡은 곳 $($stale.Count) 건 — sync 로 배포됩니다" -ForegroundColor Yellow
+        foreach ($x in $stale) { Write-Host "      ~ $x" -ForegroundColor Yellow }
+    }
+}
+
 function Copy-Tree {
     param([string]$From, [string]$To, $Diff)
     foreach ($rel in $Diff.Delete) {
@@ -377,6 +403,7 @@ Write-Host "  건드리지 않는 파일 (볼트마다 달라야 함):" -Foregro
 foreach ($f in $PerVaultFiles) { Write-Host "      $f" -ForegroundColor DarkGray }
 
 if ($Command -eq 'check') {
+    Show-SharedDocs -Vaults $targets
     Show-Nicknames -Vaults $targets
     Write-Host ""
     Write-Host "  (check 모드 — 아무것도 바꾸지 않았습니다. 적용하려면 sync)" -ForegroundColor DarkGray
